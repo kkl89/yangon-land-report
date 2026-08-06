@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yangon Land Price Report — 2026-08-05 22:29</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg: #f0f4f8; --card-bg: #fff; --text: #1e293b; --text-secondary: #64748b;
+      --border: #e2e8f0; --table-stripe: #f8fafc; --table-header-bg: #f1f5f9;
+      --tag-bg: #f3f4f6; --trend-bg: #f8fafc;
+    }
+    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans SC','Microsoft YaHei',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    .container { max-width:1400px; margin:0 auto; padding:20px; }
+    .header { background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#2563eb 100%); color:#fff; padding:28px 40px; border-radius:16px; margin-bottom:24px; position:relative; overflow:hidden; }
+    .header::after { content:''; position:absolute; top:-50%; right:-10%; width:400px; height:400px; background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%); border-radius:50%; }
+    .header h1 { font-size:26px; margin-bottom:4px; position:relative; z-index:1; }
+    .header .subtitle { font-size:14px; opacity:0.85; position:relative; z-index:1; }
+    .header .meta { display:flex; gap:24px; margin-top:10px; font-size:13px; opacity:0.9; position:relative; z-index:1; flex-wrap:wrap; align-items:center; }
+    .header .meta span { display:inline-flex; align-items:center; gap:4px; }
+    .lang-toggle { position:absolute; top:20px; right:28px; z-index:10; }
+    .lang-btn { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; padding:6px 16px; border-radius:20px; cursor:pointer; font-size:13px; font-weight:600; transition:0.2s; }
+    .lang-btn:hover { background:rgba(255,255,255,0.25); }
+    .lang-btn.active { background:#fff; color:#1e3a5f; border-color:#fff; }
+    .summary-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-bottom:24px; }
+    .card { background:var(--card-bg); border-radius:12px; padding:20px 24px; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:1px solid var(--border); }
+    .card .label { font-size:12px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; font-weight:600; }
+    .card .value { font-size:28px; font-weight:700; margin-top:6px; }
+    .card .change { font-size:13px; margin-top:4px; color:var(--text-secondary); }
+    .section { background:var(--card-bg); border-radius:12px; padding:24px 28px; margin-bottom:24px; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:1px solid var(--border); }
+    .section h2 { font-size:18px; margin-bottom:16px; display:flex; align-items:center; gap:8px; color:var(--text); }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { background:var(--table-header-bg); padding:10px 12px; text-align:left; font-weight:600; color:#475569; border-bottom:2px solid var(--border); white-space:nowrap; }
+    td { padding:8px 12px; border-bottom:1px solid #f1f5f9; white-space:nowrap; }
+    tr:hover td { background:var(--table-stripe); }
+    .up { color:#dc2626; font-weight:600; }
+    .down { color:#16a34a; font-weight:600; }
+    .tag { display:inline-block; padding:3px 10px; border-radius:6px; font-size:11px; font-weight:600; }
+    .tag-a { background:#fef2f2; color:#dc2626; }
+    .tag-b { background:#eff6ff; color:#2563eb; }
+    .tag-c { background:#f0fdf4; color:#16a34a; }
+    .tag-none { background:#f8fafc; color:#64748b; }
+    .tag-core { background:#fef3c7; color:#d97706; }
+    .tag-hot { background:#fce7f3; color:#db2777; }
+    .tag-mid { background:#e0e7ff; color:#4f46e5; }
+    .tag-new { background:#d1fae5; color:#059669; }
+    .tag-outer { background:#f3f4f6; color:#6b7280; }
+    #map { height:600px; border-radius:12px; overflow:hidden; border:1px solid var(--border); }
+    .chart-container { position:relative; height:350px; margin-top:16px; }
+    .chart-container canvas { width:100% !important; }
+    .trend-box { background:var(--trend-bg); border-left:4px solid #2563eb; padding:20px 24px; border-radius:0 8px 8px 0; margin-top:16px; }
+    .trend-box p { margin-bottom:10px; font-size:14px; line-height:1.8; }
+    .trend-box p:last-child { margin-bottom:0; }
+    .regional-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px; }
+    .regional-chart-card { background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:14px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+    .regional-chart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:14px; font-weight:700; color:#1e3a5f; }
+    code { background:#e2e8f0; padding:2px 6px; border-radius:4px; font-size:12px; font-family:'Courier New',monospace; }
+    .footer { text-align:center; padding:24px; color:#94a3b8; font-size:12px; }
+    .footer p { margin-bottom:4px; }
+    .gm-style-iw { font-size:12px; line-height:1.6; padding:8px !important; }
+    .gm-style-iw strong { display:block; margin-bottom:4px; font-size:13px; }
+    @media (max-width:768px) {
+      .container { padding:12px; }
+      .header { padding:20px; }
+      .header .meta { gap:12px; }
+      .summary-cards { grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
+      #map { height:400px; }
+      .regional-grid { grid-template-columns:1fr; }
+      .lang-toggle { top:12px; right:14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="switchLang('zh')" id="btn-zh">中</button>
+        <button class="lang-btn" onclick="switchLang('en')" id="btn-en">EN</button>
+      </div>
+      <h1>🌆 <span data-i18n="main_title"></span></h1>
+      <div class="subtitle" data-i18n="main_subtitle"></div>
+      <div class="meta">
+        <span>📅 <span data-i18n="meta_period"></span>: 2026-07-29 ~ 2026-08-05</span>
+        <span>🕐 <span data-i18n="meta_generated"></span>: 2026-08-05 22:29</span>
+        <span>🔄 <span data-i18n="meta_frequency"></span></span>
+        <span>📊 <span data-i18n="meta_source"></span></span>
+      </div>
+    </div>
+
+<div class="summary-cards">
+  <div class="card">
+    <div class="label"><span data-i18n="card_townships_label"></span></div>
+    <div class="value" style="color:#2563eb">33</div>
+    <div class="change" style="color:#64748b"><span data-i18n="card_townships_sub"></span></div>
+  </div>
+  <div class="card">
+    <div class="label"><span data-i18n="card_avg_label"></span></div>
+    <div class="value" style="color:#dc2626">497K</div>
+    <div class="change" style="color:#64748b"><span class="up">MoM +4.5%</span></div>
+  </div>
+  <div class="card">
+    <div class="label"><span data-i18n="card_gain_label"></span></div>
+    <div class="value" style="color:#db2777"><span class="lang-zh">巴罕</span><span class="lang-en" style="display:none">Bahan</span></div>
+    <div class="change" style="color:#64748b"><span class="up">+7.5%</span></div>
+  </div>
+  <div class="card">
+    <div class="label"><span data-i18n="card_plots_label"></span></div>
+    <div class="value" style="color:#059669">15</div>
+    <div class="change" style="color:#64748b"><span data-i18n="card_plots_sub"></span></div>
+  </div>
+</div>
+
+      <div class="section">
+        <h2>📍 <span data-i18n="section_township_title"></span></h2>
+        <p style="color:#64748b;font-size:13px;margin-bottom:12px"><span data-i18n="township_unit"></span> | <span data-i18n="township_source"></span></p>
+        <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th><span data-i18n="th_no"></span></th>
+              <th><span data-i18n="th_township"></span></th>
+              <th><span data-i18n="th_category"></span></th>
+              <th><span data-i18n="th_min_price"></span></th>
+              <th><span data-i18n="th_avg_price"></span></th>
+              <th><span data-i18n="th_max_price"></span></th>
+              <th><span data-i18n="th_gov_val"></span></th>
+              <th><span data-i18n="th_mom"></span></th>
+              <th><span data-i18n="th_yoy"></span></th>
+              <th><span data-i18n="th_hot_roads"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>巴罕</strong><br><span style="color:#94a3b8;font-size:11px">Bahan</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心区</span><span class="lang-en" style="display:none">Core</span></span></td>
+          <td>800K</td>
+          <td><strong>1M</strong></td>
+          <td>2M</td>
+          <td>200K ~ 600K</td>
+          <td class="up">+7.5%</td>
+          <td class="up">+80.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">茵雅湖畔、碑路沿线、世界和平塔路</span><span class="lang-en" style="display:none">Inya Lake shore, Pyay Rd, Kabar Aye Pagoda Rd</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>德贡</strong><br><span style="color:#94a3b8;font-size:11px">Dagon</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心区</span><span class="lang-en" style="display:none">Core</span></span></td>
+          <td>500K</td>
+          <td><strong>1M</strong></td>
+          <td>2M</td>
+          <td>150K ~ 500K</td>
+          <td class="up">+6.0%</td>
+          <td class="up">+55.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">市中心商业区、大金塔周边</span><span class="lang-en" style="display:none">CBD, Shwedagon Pagoda vicinity</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>甘马育</strong><br><span style="color:#94a3b8;font-size:11px">Kamayut</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心区</span><span class="lang-en" style="display:none">Core</span></span></td>
+          <td>600K</td>
+          <td><strong>900K</strong></td>
+          <td>1M</td>
+          <td>150K ~ 400K</td>
+          <td class="up">+6.8%</td>
+          <td class="up">+65.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">碑路沿线、大学路</span><span class="lang-en" style="display:none">Pyay Rd, University Ave</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>阿龙</strong><br><span style="color:#94a3b8;font-size:11px">Ahlone</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心区</span><span class="lang-en" style="display:none">Core</span></span></td>
+          <td>500K</td>
+          <td><strong>750K</strong></td>
+          <td>1M</td>
+          <td>100K ~ 350K</td>
+          <td class="up">+5.5%</td>
+          <td class="up">+48.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">阿龙路、Strand Road</span><span class="lang-en" style="display:none">Ahlone Rd, Strand Rd</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>觉达</strong><br><span style="color:#94a3b8;font-size:11px">Kyauktada</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心商业区</span><span class="lang-en" style="display:none">Core Commercial</span></span></td>
+          <td>600K</td>
+          <td><strong>1M</strong></td>
+          <td>2M</td>
+          <td>200K ~ 600K</td>
+          <td class="up">+5.0%</td>
+          <td class="up">+42.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">昂山市场周边、Bogyoke路</span><span class="lang-en" style="display:none">Bogyoke Market area, Bogyoke Rd</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>莱镇</strong><br><span style="color:#94a3b8;font-size:11px">Hlaing</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中高区</span><span class="lang-en" style="display:none">Mid-High</span></span></td>
+          <td>400K</td>
+          <td><strong>700K</strong></td>
+          <td>1M</td>
+          <td>100K ~ 300K</td>
+          <td class="up">+6.2%</td>
+          <td class="up">+55.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">茵雅湖西侧、碑路沿线</span><span class="lang-en" style="display:none">Inya Lake west, Pyay Rd</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>三羌</strong><br><span style="color:#94a3b8;font-size:11px">Sanchaung</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中高区</span><span class="lang-en" style="display:none">Mid-High</span></span></td>
+          <td>400K</td>
+          <td><strong>650K</strong></td>
+          <td>900K</td>
+          <td>80K ~ 250K</td>
+          <td class="up">+5.0%</td>
+          <td class="up">+40.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Pyay Road、Inya Road</span><span class="lang-en" style="display:none">Pyay Rd, Inya Rd</span></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>马阳</strong><br><span style="color:#94a3b8;font-size:11px">Mayangone</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中高区</span><span class="lang-en" style="display:none">Mid-High</span></span></td>
+          <td>300K</td>
+          <td><strong>550K</strong></td>
+          <td>800K</td>
+          <td>80K ~ 250K</td>
+          <td class="up">+4.5%</td>
+          <td class="up">+38.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Okkala、Ngwe Toe路</span><span class="lang-en" style="display:none">Okkala, Ngwe Toe Rd</span></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>波达通</strong><br><span style="color:#94a3b8;font-size:11px">Botataung</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心商业区</span><span class="lang-en" style="display:none">Core Commercial</span></span></td>
+          <td>400K</td>
+          <td><strong>650K</strong></td>
+          <td>900K</td>
+          <td>100K ~ 300K</td>
+          <td class="up">+4.0%</td>
+          <td class="up">+35.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Strand Road、波达通塔周边</span><span class="lang-en" style="display:none">Strand Rd, Botataung Pagoda area</span></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>巴比坦</strong><br><span style="color:#94a3b8;font-size:11px">Pabedan</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心商业区</span><span class="lang-en" style="display:none">Core Commercial</span></span></td>
+          <td>500K</td>
+          <td><strong>850K</strong></td>
+          <td>1M</td>
+          <td>150K ~ 400K</td>
+          <td class="up">+4.2%</td>
+          <td class="up">+36.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">市中心、Mahabandoola路</span><span class="lang-en" style="display:none">Downtown, Mahabandoola Rd</span></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><strong>兰马多</strong><br><span style="color:#94a3b8;font-size:11px">Lanmadaw</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心商业区</span><span class="lang-en" style="display:none">Core Commercial</span></span></td>
+          <td>450K</td>
+          <td><strong>780K</strong></td>
+          <td>1M</td>
+          <td>120K ~ 350K</td>
+          <td class="up">+4.0%</td>
+          <td class="up">+34.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">26街-29街商住区、Anawrahta路</span><span class="lang-en" style="display:none">26th-29th St commercial, Anawrahta Rd</span></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><strong>拉塔</strong><br><span style="color:#94a3b8;font-size:11px">Latha</span></td>
+          <td><span class="tag tag-core" style="background:#fef3c7;color:#d97706"><span class="lang-zh">核心商业区</span><span class="lang-en" style="display:none">Core Commercial</span></span></td>
+          <td>480K</td>
+          <td><strong>820K</strong></td>
+          <td>1M</td>
+          <td>130K ~ 380K</td>
+          <td class="up">+4.3%</td>
+          <td class="up">+35.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Latha市场、Anawrahta路</span><span class="lang-en" style="display:none">Latha Market, Anawrahta Rd</span></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><strong>东卯</strong><br><span style="color:#94a3b8;font-size:11px">Tamwe</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中高区</span><span class="lang-en" style="display:none">Mid-High</span></span></td>
+          <td>350K</td>
+          <td><strong>580K</strong></td>
+          <td>850K</td>
+          <td>90K ~ 260K</td>
+          <td class="up">+4.8%</td>
+          <td class="up">+40.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Kaba Aye Pagoda路、Tamwe市场</span><span class="lang-en" style="display:none">Kabar Aye Pagoda Rd, Tamwe Market</span></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><strong>延景</strong><br><span style="color:#94a3b8;font-size:11px">Yankin</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中高区</span><span class="lang-en" style="display:none">Mid-High</span></span></td>
+          <td>300K</td>
+          <td><strong>520K</strong></td>
+          <td>750K</td>
+          <td>80K ~ 220K</td>
+          <td class="up">+5.2%</td>
+          <td class="up">+42.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Yankin Center、佛塔路、35街</span><span class="lang-en" style="display:none">Yankin Center, Pagoda Rd, 35th St</span></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><strong>明加拉栋</strong><br><span style="color:#94a3b8;font-size:11px">Mingaladon</span></td>
+          <td><span class="tag tag-hot" style="background:#fce7f3;color:#db2777"><span class="lang-zh">新兴热点</span><span class="lang-en" style="display:none">Emerging Hotspot</span></span></td>
+          <td>300K</td>
+          <td><strong>650K</strong></td>
+          <td>1M</td>
+          <td>60K ~ 200K</td>
+          <td class="up">+7.0%</td>
+          <td class="up">+70.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">机场周边、Highway沿线</span><span class="lang-en" style="display:none">Airport vicinity, Highway</span></td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><strong>苗德贡</strong><br><span style="color:#94a3b8;font-size:11px">Myaung Dagar</span></td>
+          <td><span class="tag tag-hot" style="background:#fce7f3;color:#db2777"><span class="lang-zh">新兴热点</span><span class="lang-en" style="display:none">Emerging Hotspot</span></span></td>
+          <td>200K</td>
+          <td><strong>500K</strong></td>
+          <td>800K</td>
+          <td>50K ~ 150K</td>
+          <td class="up">+6.5%</td>
+          <td class="up">+60.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">第二黄金地段、Highway 3</span><span class="lang-en" style="display:none">2nd Golden Mile, Highway 3</span></td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><strong>九文台</strong><br><span style="color:#94a3b8;font-size:11px">Kyeemyindaing</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>250K</td>
+          <td><strong>420K</strong></td>
+          <td>650K</td>
+          <td>60K ~ 180K</td>
+          <td class="up">+4.0%</td>
+          <td class="up">+32.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">九文台市场、Pyay路西段</span><span class="lang-en" style="display:none">Kyeemyindaing Market, Pyay Rd West</span></td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><strong>丁干遵</strong><br><span style="color:#94a3b8;font-size:11px">Thingangyun</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>200K</td>
+          <td><strong>350K</strong></td>
+          <td>500K</td>
+          <td>50K ~ 150K</td>
+          <td class="up">+3.5%</td>
+          <td class="up">+28.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Thingangyun市场周边、Kyan Sit Thar路</span><span class="lang-en" style="display:none">Thingangyun Market, Kyan Sit Thar Rd</span></td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><strong>北奥加拉帕</strong><br><span style="color:#94a3b8;font-size:11px">North Okkalapa</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>150K</td>
+          <td><strong>275K</strong></td>
+          <td>400K</td>
+          <td>40K ~ 120K</td>
+          <td class="up">+3.0%</td>
+          <td class="up">+25.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Okkalapa路、市场区、26路</span><span class="lang-en" style="display:none">Okkalapa Rd, Market zone, 26th Rd</span></td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><strong>南奥加拉帕</strong><br><span style="color:#94a3b8;font-size:11px">South Okkalapa</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>180K</td>
+          <td><strong>320K</strong></td>
+          <td>480K</td>
+          <td>50K ~ 140K</td>
+          <td class="up">+3.8%</td>
+          <td class="up">+30.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">30路、佛塔路、Okkalapa市场南</span><span class="lang-en" style="display:none">30th Rd, Pagoda Rd, Okkalapa Market South</span></td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><strong>达吉打</strong><br><span style="color:#94a3b8;font-size:11px">Thaketa</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>150K</td>
+          <td><strong>275K</strong></td>
+          <td>400K</td>
+          <td>40K ~ 100K</td>
+          <td class="up">+3.2%</td>
+          <td class="up">+26.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Thaketa路、工业区周边、大桥连接线</span><span class="lang-en" style="display:none">Thaketa Rd, Industrial zone, Bridge Link Rd</span></td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td><strong>打基打</strong><br><span style="color:#94a3b8;font-size:11px">Dawbon</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>200K</td>
+          <td><strong>360K</strong></td>
+          <td>520K</td>
+          <td>50K ~ 140K</td>
+          <td class="up">+3.6%</td>
+          <td class="up">+29.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Dawbon路、Thingangyun连接区</span><span class="lang-en" style="display:none">Dawbon Rd, Thingangyun link area</span></td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td><strong>永盛</strong><br><span style="color:#94a3b8;font-size:11px">Insein</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>200K</td>
+          <td><strong>350K</strong></td>
+          <td>500K</td>
+          <td>50K ~ 150K</td>
+          <td class="up">+3.8%</td>
+          <td class="up">+30.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Insein路、市场区</span><span class="lang-en" style="display:none">Insein Rd, Market zone</span></td>
+        </tr>
+        <tr>
+          <td>24</td>
+          <td><strong>明加拉栋东</strong><br><span style="color:#94a3b8;font-size:11px">Mingala Taungnyunt</span></td>
+          <td><span class="tag tag-mid" style="background:#e0e7ff;color:#4f46e5"><span class="lang-zh">中等区</span><span class="lang-en" style="display:none">Mid</span></span></td>
+          <td>300K</td>
+          <td><strong>500K</strong></td>
+          <td>700K</td>
+          <td>60K ~ 180K</td>
+          <td class="up">+4.0%</td>
+          <td class="up">+33.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">明加拉栋市场、铁路沿线</span><span class="lang-en" style="display:none">Mingala Market, Railway corridor</span></td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td><strong>德贡东</strong><br><span style="color:#94a3b8;font-size:11px">East Dagon</span></td>
+          <td><span class="tag tag-new" style="background:#d1fae5;color:#059669"><span class="lang-zh">新兴发展区</span><span class="lang-en" style="display:none">New Development</span></span></td>
+          <td>80K</td>
+          <td><strong>165K</strong></td>
+          <td>250K</td>
+          <td>20K ~ 80K</td>
+          <td class="up">+4.5%</td>
+          <td class="up">+35.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">128-133街区、Pin Lon路</span><span class="lang-en" style="display:none">Wards 128-133, Pin Lon Rd</span></td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td><strong>德贡北</strong><br><span style="color:#94a3b8;font-size:11px">North Dagon</span></td>
+          <td><span class="tag tag-new" style="background:#d1fae5;color:#059669"><span class="lang-zh">新兴发展区</span><span class="lang-en" style="display:none">New Development</span></span></td>
+          <td>100K</td>
+          <td><strong>200K</strong></td>
+          <td>300K</td>
+          <td>25K ~ 80K</td>
+          <td class="up">+4.8%</td>
+          <td class="up">+38.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Highway沿线、Moe Kaung路、新区</span><span class="lang-en" style="display:none">Highway corridor, Moe Kaung Rd, New town</span></td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td><strong>德贡南</strong><br><span style="color:#94a3b8;font-size:11px">South Dagon</span></td>
+          <td><span class="tag tag-new" style="background:#d1fae5;color:#059669"><span class="lang-zh">新兴发展区</span><span class="lang-en" style="display:none">New Development</span></span></td>
+          <td>80K</td>
+          <td><strong>140K</strong></td>
+          <td>200K</td>
+          <td>20K ~ 60K</td>
+          <td class="up">+3.5%</td>
+          <td class="up">+28.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Yadana街、新区开发地块</span><span class="lang-en" style="display:none">Yadana St, New town development plots</span></td>
+        </tr>
+        <tr>
+          <td>28</td>
+          <td><strong>德贡色干</strong><br><span style="color:#94a3b8;font-size:11px">Dagon Seikkan</span></td>
+          <td><span class="tag tag-new" style="background:#d1fae5;color:#059669"><span class="lang-zh">新兴发展区</span><span class="lang-en" style="display:none">New Development</span></span></td>
+          <td>90K</td>
+          <td><strong>185K</strong></td>
+          <td>280K</td>
+          <td>22K ~ 80K</td>
+          <td class="up">+5.0%</td>
+          <td class="up">+40.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Zabu Thiri路、工业区东、Kyan Sit Thar路延伸</span><span class="lang-en" style="display:none">Zabu Thiri Rd, Industrial East, Kyan Sit Thar Rd ext</span></td>
+        </tr>
+        <tr>
+          <td>29</td>
+          <td><strong>瑞必达</strong><br><span style="color:#94a3b8;font-size:11px">Shwepyitha</span></td>
+          <td><span class="tag tag-outer" style="background:#f3f4f6;color:#6b7280"><span class="lang-zh">外围区</span><span class="lang-en" style="display:none">Outer</span></span></td>
+          <td>80K</td>
+          <td><strong>140K</strong></td>
+          <td>200K</td>
+          <td>20K ~ 50K</td>
+          <td class="up">+2.8%</td>
+          <td class="up">+20.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">工业区周边</span><span class="lang-en" style="display:none">Industrial zone vicinity</span></td>
+        </tr>
+        <tr>
+          <td>30</td>
+          <td><strong>莱达雅</strong><br><span style="color:#94a3b8;font-size:11px">Hlaingtharya</span></td>
+          <td><span class="tag tag-outer" style="background:#f3f4f6;color:#6b7280"><span class="lang-zh">外围工业区</span><span class="lang-en" style="display:none">Outer Industrial</span></span></td>
+          <td>60K</td>
+          <td><strong>105K</strong></td>
+          <td>150K</td>
+          <td>20K ~ 40K</td>
+          <td class="up">+2.5%</td>
+          <td class="up">+18.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">工业区、厂房用地</span><span class="lang-en" style="display:none">Industrial zone, Factory land</span></td>
+        </tr>
+        <tr>
+          <td>31</td>
+          <td><strong>坦林</strong><br><span style="color:#94a3b8;font-size:11px">Thanlyin</span></td>
+          <td><span class="tag tag-new" style="background:#d1fae5;color:#059669"><span class="lang-zh">跨河发展区</span><span class="lang-en" style="display:none">Cross-River Development</span></span></td>
+          <td>100K</td>
+          <td><strong>200K</strong></td>
+          <td>300K</td>
+          <td>30K ~ 80K</td>
+          <td class="up">+4.0%</td>
+          <td class="up">+32.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Thanlyin大桥周边、大学区</span><span class="lang-en" style="display:none">Thanlyin Bridge area, University zone</span></td>
+        </tr>
+        <tr>
+          <td>32</td>
+          <td><strong>莫比</strong><br><span style="color:#94a3b8;font-size:11px">Hmawbi</span></td>
+          <td><span class="tag tag-outer" style="background:#f3f4f6;color:#6b7280"><span class="lang-zh">远郊区</span><span class="lang-en" style="display:none">Suburban</span></span></td>
+          <td>40K</td>
+          <td><strong>70K</strong></td>
+          <td>100K</td>
+          <td>20K ~ 40K</td>
+          <td class="up">+2.0%</td>
+          <td class="up">+15.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">Highway沿线</span><span class="lang-en" style="display:none">Highway corridor</span></td>
+        </tr>
+        <tr>
+          <td>33</td>
+          <td><strong>达拉</strong><br><span style="color:#94a3b8;font-size:11px">Dala</span></td>
+          <td><span class="tag tag-new" style="background:#d1fae5;color:#059669"><span class="lang-zh">跨河发展区</span><span class="lang-en" style="display:none">Cross-River Development</span></span></td>
+          <td>50K</td>
+          <td><strong>100K</strong></td>
+          <td>150K</td>
+          <td>20K ~ 50K</td>
+          <td class="up">+3.0%</td>
+          <td class="up">+25.0%</td>
+          <td style="font-size:11px;color:#64748b"><span class="lang-zh">渡轮码头周边</span><span class="lang-en" style="display:none">Ferry terminal area</span></td>
+        </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📈 <span data-i18n="section_mom_title"></span></h2>
+        <div class="chart-container" style="height:400px"><canvas id="momChart"></canvas></div>
+      </div>
+
+      <div class="section">
+        <h2>🛣️ <span data-i18n="section_road_title"></span></h2>
+        <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th><span data-i18n="th_no"></span></th>
+              <th><span data-i18n="th_road_name"></span></th>
+              <th><span data-i18n="th_road_min"></span></th>
+              <th><span data-i18n="th_road_avg"></span></th>
+              <th><span data-i18n="th_road_max"></span></th>
+              <th><span data-i18n="th_mom"></span></th>
+              <th><span data-i18n="th_road_area"></span></th>
+              <th><span data-i18n="th_road_township"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>碑路</strong><br><span style="color:#94a3b8;font-size:11px">Pyay Road</span></td>
+          <td>800K</td>
+          <td><strong>1M</strong></td>
+          <td>2M</td>
+          <td class="up">+8.0%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">茵雅湖-甘马育-莱镇</span><span class="lang-en" style="display:none">Inya Lake - Kamayut - Hlaing</span></td>
+          <td style="font-size:12px;color:#64748b">Bahan/Kamayut/Hlaing</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>大学路</strong><br><span style="color:#94a3b8;font-size:11px">University Avenue</span></td>
+          <td>700K</td>
+          <td><strong>1M</strong></td>
+          <td>2M</td>
+          <td class="up">+6.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">仰光大学-巴罕</span><span class="lang-en" style="display:none">Yangon University - Bahan</span></td>
+          <td style="font-size:12px;color:#64748b">Bahan/Kamayut</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>世界和平塔路</strong><br><span style="color:#94a3b8;font-size:11px">Kabar Aye Pagoda Road</span></td>
+          <td>500K</td>
+          <td><strong>850K</strong></td>
+          <td>1M</td>
+          <td class="up">+5.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">巴罕-马阳-东卯</span><span class="lang-en" style="display:none">Bahan - Mayangone - Tamwe</span></td>
+          <td style="font-size:12px;color:#64748b">Bahan/Mayangone/Tamwe</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>昂山将军路</strong><br><span style="color:#94a3b8;font-size:11px">Bogyoke Aung San Road</span></td>
+          <td>600K</td>
+          <td><strong>1M</strong></td>
+          <td>2M</td>
+          <td class="up">+4.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">市中心-昂山市场</span><span class="lang-en" style="display:none">Downtown - Bogyoke Market</span></td>
+          <td style="font-size:12px;color:#64748b">Kyauktada/Pabedan</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>阿努律陀路</strong><br><span style="color:#94a3b8;font-size:11px">Anawrahta Road</span></td>
+          <td>500K</td>
+          <td><strong>850K</strong></td>
+          <td>1M</td>
+          <td class="up">+4.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">市中心东西向主干道-兰马多-拉塔</span><span class="lang-en" style="display:none">Downtown E-W arterial - Lanmadaw - Latha</span></td>
+          <td style="font-size:12px;color:#64748b">Latha/Pabedan/Lanmadaw</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>摩诃班都拉路</strong><br><span style="color:#94a3b8;font-size:11px">Mahabandoola Road</span></td>
+          <td>500K</td>
+          <td><strong>850K</strong></td>
+          <td>1M</td>
+          <td class="up">+4.2%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">市中心商业街</span><span class="lang-en" style="display:none">Downtown commercial street</span></td>
+          <td style="font-size:12px;color:#64748b">Kyauktada/Pabedan</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>Strand路</strong><br><span style="color:#94a3b8;font-size:11px">Strand Road</span></td>
+          <td>400K</td>
+          <td><strong>700K</strong></td>
+          <td>1M</td>
+          <td class="up">+4.0%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">江滨大道-阿龙-莱镇</span><span class="lang-en" style="display:none">Riverside - Ahlone - Hlaing</span></td>
+          <td style="font-size:12px;color:#64748b">Ahlone/Lanmadaw</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>达摩泽迪路</strong><br><span style="color:#94a3b8;font-size:11px">Dhammazedi Road</span></td>
+          <td>600K</td>
+          <td><strong>950K</strong></td>
+          <td>1M</td>
+          <td class="up">+5.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">巴罕-甘马育</span><span class="lang-en" style="display:none">Bahan - Kamayut</span></td>
+          <td style="font-size:12px;color:#64748b">Bahan/Kamayut</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>茵雅路</strong><br><span style="color:#94a3b8;font-size:11px">Inya Road</span></td>
+          <td>500K</td>
+          <td><strong>850K</strong></td>
+          <td>1M</td>
+          <td class="up">+5.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">茵雅湖北侧-三羌</span><span class="lang-en" style="display:none">Inya Lake north - Sanchaung</span></td>
+          <td style="font-size:12px;color:#64748b">Sanchaung/Mayangone</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>帕拉米路</strong><br><span style="color:#94a3b8;font-size:11px">Parami Road</span></td>
+          <td>400K</td>
+          <td><strong>650K</strong></td>
+          <td>900K</td>
+          <td class="up">+5.0%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">马阳-明加拉栋</span><span class="lang-en" style="display:none">Mayangone - Mingaladon</span></td>
+          <td style="font-size:12px;color:#64748b">Mayangone/Mingaladon</td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><strong>巴音瑙路</strong><br><span style="color:#94a3b8;font-size:11px">Bayint Naung Road</span></td>
+          <td>400K</td>
+          <td><strong>650K</strong></td>
+          <td>900K</td>
+          <td class="up">+5.2%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">莱镇-永盛-瑞必达</span><span class="lang-en" style="display:none">Hlaing - Insein - Shwepyitha</span></td>
+          <td style="font-size:12px;color:#64748b">Hlaing/Insein</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><strong>巴霍路</strong><br><span style="color:#94a3b8;font-size:11px">Baho Road</span></td>
+          <td>350K</td>
+          <td><strong>600K</strong></td>
+          <td>850K</td>
+          <td class="up">+5.0%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">莱镇-甘马育-九文台</span><span class="lang-en" style="display:none">Hlaing - Kamayut - Kyeemyindaing</span></td>
+          <td style="font-size:12px;color:#64748b">Hlaing/Kamayut/Kyeemyindaing</td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><strong>永盛路</strong><br><span style="color:#94a3b8;font-size:11px">Insein Road</span></td>
+          <td>250K</td>
+          <td><strong>420K</strong></td>
+          <td>650K</td>
+          <td class="up">+4.2%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">马阳-永盛-瑞必达</span><span class="lang-en" style="display:none">Mayangone - Insein - Shwepyitha</span></td>
+          <td style="font-size:12px;color:#64748b">Mayangone/Insein</td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><strong>纳瓦达街</strong><br><span style="color:#94a3b8;font-size:11px">Nawaday Street</span></td>
+          <td>400K</td>
+          <td><strong>680K</strong></td>
+          <td>950K</td>
+          <td class="up">+3.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">兰马多-拉塔老城商住区</span><span class="lang-en" style="display:none">Lanmadaw - Latha old town commercial</span></td>
+          <td style="font-size:12px;color:#64748b">Lanmadaw/Latha</td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><strong>佛塔路</strong><br><span style="color:#94a3b8;font-size:11px">Pagoda Road</span></td>
+          <td>220K</td>
+          <td><strong>380K</strong></td>
+          <td>550K</td>
+          <td class="up">+4.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">延景-南奥加拉帕</span><span class="lang-en" style="display:none">Yankin - South Okkalapa</span></td>
+          <td style="font-size:12px;color:#64748b">Yankin/South Okkalapa</td>
+        </tr>
+        <tr>
+          <td>16</td>
+          <td><strong>延景街</strong><br><span style="color:#94a3b8;font-size:11px">Yankin Street</span></td>
+          <td>250K</td>
+          <td><strong>420K</strong></td>
+          <td>600K</td>
+          <td class="up">+4.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">延景中心-35街</span><span class="lang-en" style="display:none">Yankin Center - 35th St</span></td>
+          <td style="font-size:12px;color:#64748b">Yankin</td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><strong>第26路</strong><br><span style="color:#94a3b8;font-size:11px">26th Road</span></td>
+          <td>160K</td>
+          <td><strong>270K</strong></td>
+          <td>380K</td>
+          <td class="up">+3.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">北奥加拉帕中心区</span><span class="lang-en" style="display:none">North Okkalapa central</span></td>
+          <td style="font-size:12px;color:#64748b">North Okkalapa</td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><strong>第30路</strong><br><span style="color:#94a3b8;font-size:11px">30th Road</span></td>
+          <td>180K</td>
+          <td><strong>310K</strong></td>
+          <td>450K</td>
+          <td class="up">+3.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">南奥加拉帕-Okkalapa市场南</span><span class="lang-en" style="display:none">South Okkalapa - Market South</span></td>
+          <td style="font-size:12px;color:#64748b">South Okkalapa</td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td><strong>苏达玛路</strong><br><span style="color:#94a3b8;font-size:11px">Thudhamma Road</span></td>
+          <td>170K</td>
+          <td><strong>290K</strong></td>
+          <td>420K</td>
+          <td class="up">+3.6%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">北奥加拉帕-南奥加拉帕连接</span><span class="lang-en" style="display:none">North Okkalapa - South Okkalapa link</span></td>
+          <td style="font-size:12px;color:#64748b">North Okkalapa/South Okkalapa</td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><strong>丁干遵路</strong><br><span style="color:#94a3b8;font-size:11px">Thingangyun Road</span></td>
+          <td>200K</td>
+          <td><strong>350K</strong></td>
+          <td>500K</td>
+          <td class="up">+3.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">丁干遵市场-打基打连接</span><span class="lang-en" style="display:none">Thingangyun Market - Dawbon link</span></td>
+          <td style="font-size:12px;color:#64748b">Thingangyun/Dawbon</td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><strong>甘希达路</strong><br><span style="color:#94a3b8;font-size:11px">Kyan Sit Thar Road</span></td>
+          <td>180K</td>
+          <td><strong>320K</strong></td>
+          <td>480K</td>
+          <td class="up">+4.2%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">丁干遵-德贡色干-工业东</span><span class="lang-en" style="display:none">Thingangyun - Dagon Seikkan - Industrial East</span></td>
+          <td style="font-size:12px;color:#64748b">Thingangyun/Dagon Seikkan</td>
+        </tr>
+        <tr>
+          <td>22</td>
+          <td><strong>达吉打路</strong><br><span style="color:#94a3b8;font-size:11px">Thaketa Road</span></td>
+          <td>160K</td>
+          <td><strong>280K</strong></td>
+          <td>400K</td>
+          <td class="up">+3.2%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">达吉打镇中心-大桥连接线</span><span class="lang-en" style="display:none">Thaketa center - Bridge Link Rd</span></td>
+          <td style="font-size:12px;color:#64748b">Thaketa</td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td><strong>下波桑路</strong><br><span style="color:#94a3b8;font-size:11px">Lower Pazundaung Road</span></td>
+          <td>350K</td>
+          <td><strong>560K</strong></td>
+          <td>800K</td>
+          <td class="up">+4.0%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">波达通-巴桑-明加拉栋东</span><span class="lang-en" style="display:none">Botataung - Pazundaung - Mingala Taungnyunt</span></td>
+          <td style="font-size:12px;color:#64748b">Botataung/Mingala Taungnyunt</td>
+        </tr>
+        <tr>
+          <td>24</td>
+          <td><strong>上波桑路</strong><br><span style="color:#94a3b8;font-size:11px">Upper Pazundaung Road</span></td>
+          <td>380K</td>
+          <td><strong>600K</strong></td>
+          <td>850K</td>
+          <td class="up">+4.2%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">明加拉栋东-巴桑北</span><span class="lang-en" style="display:none">Mingala Taungnyunt - Pazundaung North</span></td>
+          <td style="font-size:12px;color:#64748b">Mingala Taungnyunt</td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td><strong>扎布蒂里路</strong><br><span style="color:#94a3b8;font-size:11px">Zabu Thiri Road</span></td>
+          <td>100K</td>
+          <td><strong>180K</strong></td>
+          <td>260K</td>
+          <td class="up">+5.0%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">德贡色干中心-工业东</span><span class="lang-en" style="display:none">Dagon Seikkan center - Industrial East</span></td>
+          <td style="font-size:12px;color:#64748b">Dagon Seikkan</td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td><strong>莫贡路</strong><br><span style="color:#94a3b8;font-size:11px">Moe Kaung Road</span></td>
+          <td>110K</td>
+          <td><strong>200K</strong></td>
+          <td>300K</td>
+          <td class="up">+4.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">德贡北新区-Highway</span><span class="lang-en" style="display:none">North Dagon new town - Highway</span></td>
+          <td style="font-size:12px;color:#64748b">North Dagon</td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td><strong>雅达纳街</strong><br><span style="color:#94a3b8;font-size:11px">Yadana Street</span></td>
+          <td>90K</td>
+          <td><strong>150K</strong></td>
+          <td>220K</td>
+          <td class="up">+3.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">德贡南开发区</span><span class="lang-en" style="display:none">South Dagon development zone</span></td>
+          <td style="font-size:12px;color:#64748b">South Dagon</td>
+        </tr>
+        <tr>
+          <td>28</td>
+          <td><strong>彬隆路</strong><br><span style="color:#94a3b8;font-size:11px">Pin Lon Road</span></td>
+          <td>85K</td>
+          <td><strong>165K</strong></td>
+          <td>250K</td>
+          <td class="up">+4.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">德贡东128-133街区</span><span class="lang-en" style="display:none">East Dagon Wards 128-133</span></td>
+          <td style="font-size:12px;color:#64748b">East Dagon</td>
+        </tr>
+        <tr>
+          <td>29</td>
+          <td><strong>昂敏加拉高速</strong><br><span style="color:#94a3b8;font-size:11px">Aung Mingalar Highway</span></td>
+          <td>300K</td>
+          <td><strong>550K</strong></td>
+          <td>800K</td>
+          <td class="up">+6.5%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">明加拉栋-德贡东-Highway入口</span><span class="lang-en" style="display:none">Mingaladon - East Dagon - Highway entrance</span></td>
+          <td style="font-size:12px;color:#64748b">Mingaladon/East Dagon</td>
+        </tr>
+        <tr>
+          <td>30</td>
+          <td><strong>仰曼高速</strong><br><span style="color:#94a3b8;font-size:11px">Yangon-Mandalay Highway</span></td>
+          <td>200K</td>
+          <td><strong>400K</strong></td>
+          <td>600K</td>
+          <td class="up">+5.8%</td>
+          <td style="font-size:12px;color:#64748b"><span class="lang-zh">明加拉栋-莫比-Highway沿线</span><span class="lang-en" style="display:none">Mingaladon - Hmawbi - Highway corridor</span></td>
+          <td style="font-size:12px;color:#64748b">Mingaladon/Hmawbi</td>
+        </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="chart-container"><canvas id="roadChart"></canvas></div>
+      </div>
+
+      <div class="section">
+        <h2>📋 <span data-i18n="section_import_title"></span> <span style="font-size:13px;color:#64748b;font-weight:400">(<span data-i18n="total_records"></span> 15)</span></h2>
+        <p style="color:#64748b;font-size:13px;margin-bottom:12px"><span data-i18n="import_note"></span></p>
+        <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th><span data-i18n="th_no"></span></th>
+              <th><span data-i18n="th_township"></span></th>
+              <th><span data-i18n="th_import_area"></span></th>
+              <th><span data-i18n="th_import_price"></span></th>
+              <th><span data-i18n="th_import_coords"></span></th>
+              <th><span data-i18n="th_import_road_cond"></span></th>
+              <th><span data-i18n="th_import_road_width"></span></th>
+              <th><span data-i18n="th_import_grade"></span></th>
+              <th><span data-i18n="th_import_coeff"></span></th>
+              <th><span data-i18n="th_import_unit_price"></span></th>
+              <th><span data-i18n="th_import_adj_price"></span></th>
+              <th><span data-i18n="th_import_vs_benchmark"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>巴罕</strong></td>
+          <td>2,400</td>
+          <td>3.6B</td>
+          <td style="font-size:11px">16.8409, 96.1735</td>
+          <td>主干道</td>
+          <td>50'</td>
+          <td><span class="tag tag-a" style="background:#fef2f2;color:#dc2626">A</span></td>
+          <td>1.30x</td>
+          <td><strong>2M</strong></td>
+          <td>1M</td>
+          <td><span class="down">-11.2%</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>巴罕</strong></td>
+          <td>1,800</td>
+          <td>2.1B</td>
+          <td style="font-size:11px">16.8360, 96.1700</td>
+          <td>次干道</td>
+          <td>30'</td>
+          <td><span class="tag tag-b" style="background:#eff6ff;color:#2563eb">B</span></td>
+          <td>1.15x</td>
+          <td><strong>1M</strong></td>
+          <td>1M</td>
+          <td><span class="down">-22.0%</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>甘马育</strong></td>
+          <td>2,400</td>
+          <td>2.2B</td>
+          <td style="font-size:11px">16.8250, 96.1590</td>
+          <td>主干道</td>
+          <td>40'</td>
+          <td><span class="tag tag-a" style="background:#fef2f2;color:#dc2626">A</span></td>
+          <td>1.30x</td>
+          <td><strong>900K</strong></td>
+          <td>692K</td>
+          <td><span class="down">-23.1%</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>甘马育</strong></td>
+          <td>1,200</td>
+          <td>720M</td>
+          <td style="font-size:11px">16.8200, 96.1550</td>
+          <td>小巷</td>
+          <td>16'</td>
+          <td><span class="tag tag-c" style="background:#f0fdf4;color:#16a34a">C</span></td>
+          <td>1.05x</td>
+          <td><strong>600K</strong></td>
+          <td>571K</td>
+          <td><span class="down">-36.5%</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>莱镇</strong></td>
+          <td>2,400</td>
+          <td>1.7B</td>
+          <td style="font-size:11px">16.8430, 96.1320</td>
+          <td>次干道</td>
+          <td>30'</td>
+          <td><span class="tag tag-b" style="background:#eff6ff;color:#2563eb">B</span></td>
+          <td>1.15x</td>
+          <td><strong>700K</strong></td>
+          <td>609K</td>
+          <td><span class="down">-13.0%</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>莱镇</strong></td>
+          <td>4,800</td>
+          <td>1.4B</td>
+          <td style="font-size:11px">16.8500, 96.1280</td>
+          <td>小巷</td>
+          <td>12'</td>
+          <td><span class="tag tag-无" style="background:#f8fafc;color:#64748b">无</span></td>
+          <td>1.00x</td>
+          <td><strong>300K</strong></td>
+          <td>300K</td>
+          <td><span class="down">-57.1%</span></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>明加拉栋</strong></td>
+          <td>3,600</td>
+          <td>2.3B</td>
+          <td style="font-size:11px">16.8920, 96.1330</td>
+          <td>主干道</td>
+          <td>60'</td>
+          <td><span class="tag tag-a" style="background:#fef2f2;color:#dc2626">A</span></td>
+          <td>1.30x</td>
+          <td><strong>650K</strong></td>
+          <td>500K</td>
+          <td><span class="down">-23.1%</span></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>德贡东</strong></td>
+          <td>2,400</td>
+          <td>480M</td>
+          <td style="font-size:11px">16.9400, 96.2200</td>
+          <td>次干道</td>
+          <td>24'</td>
+          <td><span class="tag tag-b" style="background:#eff6ff;color:#2563eb">B</span></td>
+          <td>1.15x</td>
+          <td><strong>200K</strong></td>
+          <td>174K</td>
+          <td><span class="down">-82.6%</span></td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>三羌</strong></td>
+          <td>1,800</td>
+          <td>1.2B</td>
+          <td style="font-size:11px">16.8110, 96.1570</td>
+          <td>次干道</td>
+          <td>28'</td>
+          <td><span class="tag tag-b" style="background:#eff6ff;color:#2563eb">B</span></td>
+          <td>1.15x</td>
+          <td><strong>650K</strong></td>
+          <td>565K</td>
+          <td><span class="down">-13.0%</span></td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>阿龙</strong></td>
+          <td>2,400</td>
+          <td>1.8B</td>
+          <td style="font-size:11px">16.7990, 96.1490</td>
+          <td>主干道</td>
+          <td>45'</td>
+          <td><span class="tag tag-a" style="background:#fef2f2;color:#dc2626">A</span></td>
+          <td>1.30x</td>
+          <td><strong>750K</strong></td>
+          <td>577K</td>
+          <td><span class="down">-23.1%</span></td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><strong>马阳</strong></td>
+          <td>3,600</td>
+          <td>2.0B</td>
+          <td style="font-size:11px">16.8660, 96.1560</td>
+          <td>次干道</td>
+          <td>30'</td>
+          <td><span class="tag tag-b" style="background:#eff6ff;color:#2563eb">B</span></td>
+          <td>1.15x</td>
+          <td><strong>550K</strong></td>
+          <td>478K</td>
+          <td><span class="down">-13.0%</span></td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td><strong>永盛</strong></td>
+          <td>2,400</td>
+          <td>840M</td>
+          <td style="font-size:11px">16.8730, 96.1070</td>
+          <td>小巷</td>
+          <td>16'</td>
+          <td><span class="tag tag-c" style="background:#f0fdf4;color:#16a34a">C</span></td>
+          <td>1.05x</td>
+          <td><strong>350K</strong></td>
+          <td>333K</td>
+          <td><span class="down">-4.8%</span></td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><strong>苗德贡</strong></td>
+          <td>8,400</td>
+          <td>4.2B</td>
+          <td style="font-size:11px">16.9200, 96.0800</td>
+          <td>主干道</td>
+          <td>50'</td>
+          <td><span class="tag tag-无" style="background:#f8fafc;color:#64748b">无</span></td>
+          <td>1.00x</td>
+          <td><strong>500K</strong></td>
+          <td>500K</td>
+          <td><span class="down">-50.0%</span></td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><strong>丁干遵</strong></td>
+          <td>2,400</td>
+          <td>840M</td>
+          <td style="font-size:11px">16.8330, 96.2090</td>
+          <td>次干道</td>
+          <td>24'</td>
+          <td><span class="tag tag-c" style="background:#f0fdf4;color:#16a34a">C</span></td>
+          <td>1.05x</td>
+          <td><strong>350K</strong></td>
+          <td>333K</td>
+          <td><span class="down">-4.8%</span></td>
+        </tr>
+        <tr>
+          <td>15</td>
+          <td><strong>德贡北</strong></td>
+          <td>2,400</td>
+          <td>480M</td>
+          <td style="font-size:11px">16.9600, 96.1800</td>
+          <td>小巷</td>
+          <td>16'</td>
+          <td><span class="tag tag-无" style="background:#f8fafc;color:#64748b">无</span></td>
+          <td>1.00x</td>
+          <td><strong>200K</strong></td>
+          <td>200K</td>
+          <td><span class="down">-80.0%</span></td>
+        </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🏠 <span data-i18n="section_premium_title"></span></h2>
+        <table>
+          <thead>
+            <tr>
+              <th><span data-i18n="th_premium_grade"></span></th>
+              <th><span data-i18n="th_premium_count"></span></th>
+              <th><span data-i18n="th_premium_avg_area"></span></th>
+              <th><span data-i18n="th_premium_avg_price"></span></th>
+              <th><span data-i18n="th_premium_avg_unit"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td><span class="tag tag-a" style="background:#fef2f2;color:#dc2626">Grade A</span></td>
+          <td>4</td>
+          <td>2,700</td>
+          <td>2.5B</td>
+          <td>917K</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-b" style="background:#eff6ff;color:#2563eb">Grade B</span></td>
+          <td>5</td>
+          <td>2,400</td>
+          <td>1.5B</td>
+          <td>618K</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-c" style="background:#f0fdf4;color:#16a34a">Grade C</span></td>
+          <td>3</td>
+          <td>2,000</td>
+          <td>800M</td>
+          <td>400K</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-无" style="background:#f8fafc;color:#64748b">Grade 无</span></td>
+          <td>3</td>
+          <td>5,200</td>
+          <td>2.0B</td>
+          <td>392K</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>🗺️ <span data-i18n="section_map_title"></span></h2>
+        <p style="color:#64748b;font-size:13px;margin-bottom:12px">
+          <span data-i18n="map_plots_count"></span> 15 | <span data-i18n="map_township_note"></span>
+        </p>
+        <div style="display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap" id="map-legend">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;border-radius:50%;background:#dc2626;display:inline-block"></span><span data-i18n="map_legend_a"></span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;border-radius:50%;background:#2563eb;display:inline-block"></span><span data-i18n="map_legend_b"></span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;display:inline-block"></span><span data-i18n="map_legend_c"></span></span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px"><span style="width:12px;height:12px;border-radius:50%;background:#64748b;display:inline-block"></span><span data-i18n="map_legend_none"></span></span>
+        </div>
+        <div id="map"></div>
+      </div>
+
+      <div class="section">
+        <h2>🗺️ <span data-i18n="section_regional_title"></span></h2>
+        <p style="color:#64748b;font-size:13px;margin-bottom:12px"><span data-i18n="regional_subtitle"></span></p>
+        <div class="regional-grid">
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">德贡东</span><span class="lang-en" style="display:none">East Dagon</span>
+            <span class="up" style="font-size:12px;font-weight:700">+13.8%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_0"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">德贡北</span><span class="lang-en" style="display:none">North Dagon</span>
+            <span class="up" style="font-size:12px;font-weight:700">+14.3%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_1"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">德贡南</span><span class="lang-en" style="display:none">South Dagon</span>
+            <span class="up" style="font-size:12px;font-weight:700">+12.0%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_2"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">南奥加拉帕</span><span class="lang-en" style="display:none">South Okkalapa</span>
+            <span class="up" style="font-size:12px;font-weight:700">+10.3%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_3"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">北奥加拉帕</span><span class="lang-en" style="display:none">North Okkalapa</span>
+            <span class="up" style="font-size:12px;font-weight:700">+7.8%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_4"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">达吉打</span><span class="lang-en" style="display:none">Thaketa</span>
+            <span class="up" style="font-size:12px;font-weight:700">+7.8%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_5"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">延景</span><span class="lang-en" style="display:none">Yankin</span>
+            <span class="up" style="font-size:12px;font-weight:700">+10.6%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_6"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">丁干遵</span><span class="lang-en" style="display:none">Thingangyun</span>
+            <span class="up" style="font-size:12px;font-weight:700">+7.7%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_7"></canvas></div>
+        </div>
+        <div class="regional-chart-card">
+          <div class="regional-chart-header">
+            <span class="lang-zh">德贡色干</span><span class="lang-en" style="display:none">Dagon Seikkan</span>
+            <span class="up" style="font-size:12px;font-weight:700">+12.1%</span>
+          </div>
+          <div style="height:160px"><canvas id="regionalChart_8"></canvas></div>
+        </div>
+
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📊 <span data-i18n="section_trend_title"></span></h2>
+        <div class="chart-container" style="height:300px;margin-bottom:16px"><canvas id="trendChart"></canvas></div>
+        <div class="trend-box">
+<p><span data-i18n="trend_overall_p1"></span> 420K/sqft <span data-i18n="trend_overall_p2"></span> 515K/sqft<span data-i18n="trend_overall_p3"></span> <span class="up">+22.6%</span><span data-i18n="trend_overall_p4"></span> 319 <span data-i18n="trend_overall_p5"></span></p>
+<p><strong><span data-i18n="trend_mom_label"></span></strong> <span data-i18n="trend_mom_p1"></span> <span class="up">+4.5%</span><span data-i18n="trend_mom_p2"></span> <span class="up">+38.2%</span><span data-i18n="trend_mom_p3"></span> <span class="lang-zh">巴罕(+7.5%)、明加拉栋(+7.0%)、甘马育(+6.8%)</span><span class="lang-en" style="display:none">Bahan(+7.5%), Mingaladon(+7.0%), Kamayut(+6.8%)</span><span data-i18n="trend_mom_p4"></span></p>
+<p><strong><span data-i18n="trend_drivers_label"></span></strong> <span data-i18n="trend_drivers_text"></span></p>
+<p><strong><span data-i18n="trend_risks_label"></span></strong> <span data-i18n="trend_risks_text"></span></p>
+<p><strong><span data-i18n="trend_outlook_label"></span></strong> <span data-i18n="trend_outlook_text"></span></p>
+
+        </div>
+      </div>
+
+
+    <div class="footer">
+      <p><span data-i18n="footer_brand"></span></p>
+      <p><span data-i18n="footer_source"></span></p>
+      <p><span data-i18n="footer_disclaimer"></span></p>
+    </div>
+  </div>
+
+  
+  <script>
+    /* ================================================================
+       I18N — 中英文双语系统
+       ================================================================ */
+    var I18N = {
+      zh: {
+        main_title: '仰光地价动态分析报告',
+        main_subtitle: 'Yangon Land Price Dynamic Analysis — 周度报告',
+        meta_period: '报告周期',
+        meta_generated: '生成时间',
+        meta_frequency: '每周一自动生成',
+        meta_source: '数据来源：缅甸价格评估委员会 + 团队采集',
+
+        card_townships_label: '追踪镇区数',
+        card_townships_sub: '覆盖仰光主要区域',
+        card_avg_label: '市场均价 (每平方英尺)',
+        card_gain_label: '本期最大涨幅',
+        card_plots_label: '导入地块数',
+        card_plots_sub: '已匹配基准库',
+        card_plots_sub_empty: '等待导入',
+
+        section_township_title: '各镇区基准地价',
+        township_unit: '单位：MMK/平方英尺',
+        township_source: '数据来源：缅甸价格评估委员会 + 房地产服务商协会 + 团队采集',
+        th_no: '#',
+        th_township: '镇区',
+        th_category: '区域等级',
+        th_min_price: '最低价',
+        th_avg_price: '基准均价',
+        th_max_price: '最高价',
+        th_gov_val: '政府估价',
+        th_mom: '环比变动',
+        th_yoy: '同比变动',
+        th_hot_roads: '热门路段',
+
+        section_road_title: '核心路段价格对比',
+        th_road_name: '路段名称',
+        th_road_min: '最低价',
+        th_road_avg: '均价',
+        th_road_max: '最高价',
+        th_road_area: '覆盖区域',
+        th_road_township: '所属镇区',
+
+        section_mom_title: '环比变动 Top 15',
+
+        section_import_title: '导入地块数据分析',
+        total_records: '共',
+        import_note: '实际地价 = 售价 ÷ 地块面积 ÷ 溢价系数 | 溢价系数：A=1.30x, B=1.15x, C=1.05x, 无建筑=1.00x',
+        no_import_data: '本期未导入地块数据',
+        import_instruction: '请将含地块信息的Excel文件放入',
+        import_fields: '支持字段：镇区、地块大小(平方英尺)、售价、经纬度、路况、马路宽度、有无房屋、房屋质量分级(A/B/C)',
+        th_import_area: '面积(sqft)',
+        th_import_price: '售价',
+        th_import_coords: '坐标',
+        th_import_road_cond: '路况',
+        th_import_road_width: '路宽',
+        th_import_grade: '等级',
+        th_import_coeff: '系数',
+        th_import_unit_price: '实际单价',
+        th_import_adj_price: '修正地价',
+        th_import_vs_benchmark: 'vs基准',
+
+        section_premium_title: '房屋分级溢价分析',
+        th_premium_grade: '建筑等级',
+        th_premium_count: '地块数',
+        th_premium_avg_area: '平均面积(sqft)',
+        th_premium_avg_price: '平均售价',
+        th_premium_avg_unit: '平均单价',
+
+        section_map_title: '地块分布地图',
+        map_plots_count: '共标注',
+        map_township_note: '镇区基准价中心点同步标注',
+        map_legend_a: 'Grade A 高质量',
+        map_legend_b: 'Grade B 中等',
+        map_legend_c: 'Grade C 低质量',
+        map_legend_none: '空地',
+
+        section_regional_title: '重点区域趋势分析',
+        regional_subtitle: '以下9个重点区域6个月地价走势（红色=涨，绿色=跌），每张图独立展示该区域均价与交易量变化',
+        section_trend_title: '趋势分析',
+        trend_overall_p1: '过去6个月仰光地价从',
+        trend_overall_p2: '上涨至',
+        trend_overall_p3: '，累计涨幅',
+        trend_overall_p4: '。月均交易量',
+        trend_overall_p5: '宗。',
+        trend_mom_label: '环比变动：',
+        trend_mom_p1: '全市平均环比',
+        trend_mom_p2: '，同比',
+        trend_mom_p3: '。涨幅领先镇区：',
+        trend_mom_p4: '。',
+        trend_drivers_label: '核心驱动因素：',
+        trend_drivers_text: '① 国内移民持续涌入（实皆、曼德勒、马圭等地居民迁入仰光），住房需求旺盛；② 缅元贬值与通货膨胀推动资产避险需求转向房地产；③ 冲突区资金流入仰光置业，明加拉栋、苗德贡等区域大额交易活跃。',
+        trend_risks_label: '风险提示：',
+        trend_risks_text: '① 政府与私人合作住房项目若大规模推进，可能缓解供给紧张、抑制涨幅；② 2025年曼德勒地震对高层公寓市场造成短期冲击，需关注结构安全信心恢复；③ 缅元汇率波动可能影响外资购买力。',
+        trend_outlook_label: '下期展望：',
+        trend_outlook_text: '预计核心区（巴罕、德贡、甘马育）维持 5-8% 月涨幅，新兴热点（明加拉栋、苗德贡）受大额交易驱动涨幅或达 6-9%。远郊区（莫比、岱枝）涨幅趋缓至 2-3%。建议重点关注碑路沿线及机场周边地块机会。',
+
+        footer_brand: 'NOVA CITY 🌆 | 仰光地价动态分析系统 v2.0',
+        footer_source: '数据来源：缅甸价格评估委员会公开信息 · 缅甸房地产服务商协会 · 团队实地采集',
+        footer_disclaimer: '本报告仅供投资参考，实际交易价格以双方协议为准',
+
+        chart_mom_label: '环比变动(%)',
+        chart_mom_axis: '环比变动 %',
+        chart_road_min: '最低价',
+        chart_road_avg: '均价',
+        chart_road_max: '最高价',
+        chart_road_axis: 'MMK/sqft',
+        chart_trend_price: '均价 (MMK/sqft)',
+        chart_trend_transactions: '交易量',
+        chart_trend_axis_price: 'MMK/sqft',
+        chart_trend_axis_transactions: '交易量',
+
+        map_popup_avg: '基准均价',
+        map_popup_mom: '环比',
+        map_popup_category: '等级',
+        map_popup_area: '面积',
+        map_popup_price: '售价',
+        map_popup_unit_price: '实际单价',
+        map_popup_adj_price: '修正地价',
+        map_popup_coeff: '溢价系数',
+        map_popup_road: '路况',
+        map_popup_road_width: '路宽',
+        map_popup_vs_benchmark: 'vs基准',
+      },
+
+      en: {
+        main_title: 'Yangon Land Price Report',
+        main_subtitle: 'Yangon Land Price Dynamic Analysis — Weekly Report',
+        meta_period: 'Period',
+        meta_generated: 'Generated',
+        meta_frequency: 'Auto-generated weekly',
+        meta_source: 'Source: Myanmar Valuation Committee + Field Data',
+
+        card_townships_label: 'Tracked Townships',
+        card_townships_sub: 'Covering key Yangon areas',
+        card_avg_label: 'Market Avg (per sqft)',
+        card_gain_label: 'Top Gainer (MoM)',
+        card_plots_label: 'Imported Plots',
+        card_plots_sub: 'Matched to benchmark',
+        card_plots_sub_empty: 'Awaiting import',
+
+        section_township_title: 'Township Benchmark Prices',
+        township_unit: 'Unit: MMK/sqft',
+        township_source: 'Source: Myanmar Valuation Committee + Real Estate Services Association + Field Data',
+        th_no: '#',
+        th_township: 'Township',
+        th_category: 'Tier',
+        th_min_price: 'Min',
+        th_avg_price: 'Avg Benchmark',
+        th_max_price: 'Max',
+        th_gov_val: 'Govt Valuation',
+        th_mom: 'MoM',
+        th_yoy: 'YoY',
+        th_hot_roads: 'Hot Areas',
+
+        section_road_title: 'Core Road Price Comparison',
+        th_road_name: 'Road Name',
+        th_road_min: 'Min Price',
+        th_road_avg: 'Avg Price',
+        th_road_max: 'Max Price',
+        th_road_area: 'Coverage',
+        th_road_township: 'Township',
+
+        section_mom_title: 'MoM Change Top 15',
+
+        section_import_title: 'Imported Plot Data Analysis',
+        total_records: 'Total',
+        import_note: 'Land Price = Sale Price / Plot Area / Premium Coefficient | Coefficients: A=1.30x, B=1.15x, C=1.05x, No Building=1.00x',
+        no_import_data: 'No plot data imported this period',
+        import_instruction: 'Place Excel files with plot data in',
+        import_fields: 'Supported fields: Township, Plot Size (sqft), Sale Price, Lat/Lng, Road Condition, Road Width, Has Building, Building Grade (A/B/C)',
+        th_import_area: 'Area (sqft)',
+        th_import_price: 'Price',
+        th_import_coords: 'Coordinates',
+        th_import_road_cond: 'Road Condition',
+        th_import_road_width: 'Road Width',
+        th_import_grade: 'Grade',
+        th_import_coeff: 'Coeff',
+        th_import_unit_price: 'Unit Price',
+        th_import_adj_price: 'Adj Land Price',
+        th_import_vs_benchmark: 'vs Benchmark',
+
+        section_premium_title: 'Building Grade Premium Analysis',
+        th_premium_grade: 'Grade',
+        th_premium_count: 'Plots',
+        th_premium_avg_area: 'Avg Area (sqft)',
+        th_premium_avg_price: 'Avg Price',
+        th_premium_avg_unit: 'Avg Unit Price',
+
+        section_map_title: 'Plot Distribution Map',
+        map_plots_count: 'Plot markers:',
+        map_township_note: 'Township benchmark centers also shown',
+        map_legend_a: 'Grade A (High Quality)',
+        map_legend_b: 'Grade B (Medium)',
+        map_legend_c: 'Grade C (Low Quality)',
+        map_legend_none: 'Vacant Land',
+
+        section_regional_title: 'Regional Trend Analysis',
+        regional_subtitle: '6-month land price trends for 9 focus areas (red=up, green=down). Each chart shows avg price and transaction volume.',
+        section_trend_title: 'Trend Analysis',
+        trend_overall_p1: 'Over the past 6 months, Yangon land prices rose from',
+        trend_overall_p2: 'to',
+        trend_overall_p3: ', cumulative increase of',
+        trend_overall_p4: '. Average monthly transactions:',
+        trend_overall_p5: 'deals.',
+        trend_mom_label: 'MoM Change:',
+        trend_mom_p1: 'City-wide avg MoM',
+        trend_mom_p2: ', YoY',
+        trend_mom_p3: '. Top gainers:',
+        trend_mom_p4: '.',
+        trend_drivers_label: 'Key Drivers:',
+        trend_drivers_text: '(1) Sustained domestic migration into Yangon (from Sagaing, Mandalay, Magway) driving housing demand; (2) MMK depreciation & inflation pushing asset-hedge demand toward real estate; (3) Conflict-zone capital flowing into Yangon property, with large transactions active in Mingaladon & Myittar Nyunt.',
+        trend_risks_label: 'Risk Factors:',
+        trend_risks_text: '(1) Large-scale government-private housing partnerships could ease supply tightness and cap price gains; (2) The 2025 Mandalay earthquake has caused short-term disruption to the high-rise condo market — structural confidence recovery needs monitoring; (3) MMK exchange rate volatility may affect foreign buyer purchasing power.',
+        trend_outlook_label: 'Outlook:',
+        trend_outlook_text: 'Core zones (Bahan, Dagon, Kamayut) expected to maintain 5-8% monthly gains; emerging hotspots (Mingaladon, Myittar Nyunt) may see 6-9% driven by large transactions. Outer districts (Hmawbi, Taikkyi) to slow to 2-3%. Recommend focusing on Pyay Road corridor and airport-adjacent plot opportunities.',
+
+        footer_brand: 'NOVA CITY | Yangon Land Price Analysis System v2.0',
+        footer_source: 'Sources: Myanmar Valuation Committee Public Data | Myanmar Real Estate Services Association | Field Collection',
+        footer_disclaimer: 'For investment reference only. Actual transaction prices subject to bilateral agreement.',
+
+        chart_mom_label: 'MoM Change (%)',
+        chart_mom_axis: 'MoM Change %',
+        chart_road_min: 'Min Price',
+        chart_road_avg: 'Avg Price',
+        chart_road_max: 'Max Price',
+        chart_road_axis: 'MMK/sqft',
+        chart_trend_price: 'Avg Price (MMK/sqft)',
+        chart_trend_transactions: 'Transactions',
+        chart_trend_axis_price: 'MMK/sqft',
+        chart_trend_axis_transactions: 'Transactions',
+
+        map_popup_avg: 'Benchmark Avg',
+        map_popup_mom: 'MoM',
+        map_popup_category: 'Tier',
+        map_popup_area: 'Area',
+        map_popup_price: 'Price',
+        map_popup_unit_price: 'Unit Price',
+        map_popup_adj_price: 'Adj Land Price',
+        map_popup_coeff: 'Premium Coeff',
+        map_popup_road: 'Road',
+        map_popup_road_width: 'Width',
+        map_popup_vs_benchmark: 'vs Benchmark',
+      }
+    };
+
+    var currentLang = 'zh';
+
+    function switchLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('#btn-zh, #btn-en').forEach(function(b) { b.classList.remove('active'); });
+      document.getElementById('btn-' + lang).classList.add('active');
+
+      // Update all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (I18N[lang] && I18N[lang][key]) {
+          el.textContent = I18N[lang][key];
+        }
+      });
+
+      // Toggle bilingual data fields (lang-zh / lang-en)
+      document.querySelectorAll('.lang-zh').forEach(function(el) { el.style.display = lang === 'zh' ? '' : 'none'; });
+      document.querySelectorAll('.lang-en').forEach(function(el) { el.style.display = lang === 'en' ? '' : 'none'; });
+
+      // Re-render charts with new labels
+      renderCharts();
+    }
+
+    // Apply i18n on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      switchLang('zh');
+    });
+
+    /* ================================================================
+       GOOGLE MAPS
+       ================================================================ */
+    var gmap, gmapInfoWindow;
+    var plots = [{"lat": 16.8409, "lng": 96.1735, "township": "巴罕", "grade": "A", "size_sqft": 2400.0, "sale_price": 3600000000.0, "price_per_sqft": 1500000.0, "adj_land_sqft": 1153846.1538461538, "premium_coeff": 1.3, "road_condition": "主干道", "road_width": 50.0, "deviation": -11.242603550295865, "notes": "茵雅湖畔，碑路沿线"}, {"lat": 16.836, "lng": 96.17, "township": "巴罕", "grade": "B", "size_sqft": 1800.0, "sale_price": 2100000000.0, "price_per_sqft": 1166666.6666666667, "adj_land_sqft": 1014492.7536231886, "premium_coeff": 1.15, "road_condition": "次干道", "road_width": 30.0, "deviation": -21.96209587513934, "notes": "靠近茵雅湖"}, {"lat": 16.825, "lng": 96.159, "township": "甘马育", "grade": "A", "size_sqft": 2400.0, "sale_price": 2160000000.0, "price_per_sqft": 900000.0, "adj_land_sqft": 692307.6923076923, "premium_coeff": 1.3, "road_condition": "主干道", "road_width": 40.0, "deviation": -23.076923076923084, "notes": "碑路沿线，商业用途"}, {"lat": 16.82, "lng": 96.155, "township": "甘马育", "grade": "C", "size_sqft": 1200.0, "sale_price": 720000000.0, "price_per_sqft": 600000.0, "adj_land_sqft": 571428.5714285714, "premium_coeff": 1.05, "road_condition": "小巷", "road_width": 16.0, "deviation": -36.50793650793652, "notes": "老式排屋"}, {"lat": 16.843, "lng": 96.132, "township": "莱镇", "grade": "B", "size_sqft": 2400.0, "sale_price": 1680000000.0, "price_per_sqft": 700000.0, "adj_land_sqft": 608695.6521739131, "premium_coeff": 1.15, "road_condition": "次干道", "road_width": 30.0, "deviation": -13.04347826086956, "notes": "碑路西侧"}, {"lat": 16.85, "lng": 96.128, "township": "莱镇", "grade": "无", "size_sqft": 4800.0, "sale_price": 1440000000.0, "price_per_sqft": 300000.0, "adj_land_sqft": 300000.0, "premium_coeff": 1.0, "road_condition": "小巷", "road_width": 12.0, "deviation": -57.14285714285714, "notes": "空地待开发"}, {"lat": 16.892, "lng": 96.133, "township": "明加拉栋", "grade": "A", "size_sqft": 3600.0, "sale_price": 2340000000.0, "price_per_sqft": 650000.0, "adj_land_sqft": 500000.0, "premium_coeff": 1.3, "road_condition": "主干道", "road_width": 60.0, "deviation": -23.076923076923077, "notes": "机场附近，大户地块"}, {"lat": 16.94, "lng": 96.22, "township": "德贡东", "grade": "B", "size_sqft": 2400.0, "sale_price": 480000000.0, "price_per_sqft": 200000.0, "adj_land_sqft": 173913.0434782609, "premium_coeff": 1.15, "road_condition": "次干道", "road_width": 24.0, "deviation": -82.6086956521739, "notes": "128街区"}, {"lat": 16.811, "lng": 96.157, "township": "三羌", "grade": "B", "size_sqft": 1800.0, "sale_price": 1170000000.0, "price_per_sqft": 650000.0, "adj_land_sqft": 565217.3913043479, "premium_coeff": 1.15, "road_condition": "次干道", "road_width": 28.0, "deviation": -13.043478260869554, "notes": "Inya Road附近"}, {"lat": 16.799, "lng": 96.149, "township": "阿龙", "grade": "A", "size_sqft": 2400.0, "sale_price": 1800000000.0, "price_per_sqft": 750000.0, "adj_land_sqft": 576923.0769230769, "premium_coeff": 1.3, "road_condition": "主干道", "road_width": 45.0, "deviation": -23.076923076923084, "notes": "Strand Road沿线"}, {"lat": 16.866, "lng": 96.156, "township": "马阳", "grade": "B", "size_sqft": 3600.0, "sale_price": 1980000000.0, "price_per_sqft": 550000.0, "adj_land_sqft": 478260.8695652174, "premium_coeff": 1.15, "road_condition": "次干道", "road_width": 30.0, "deviation": -13.043478260869563, "notes": "Okkala区域"}, {"lat": 16.873, "lng": 96.107, "township": "永盛", "grade": "C", "size_sqft": 2400.0, "sale_price": 840000000.0, "price_per_sqft": 350000.0, "adj_land_sqft": 333333.3333333333, "premium_coeff": 1.05, "road_condition": "小巷", "road_width": 16.0, "deviation": -4.761904761904767, "notes": "老街区"}, {"lat": 16.92, "lng": 96.08, "township": "苗德贡", "grade": "无", "size_sqft": 8400.0, "sale_price": 4200000000.0, "price_per_sqft": 500000.0, "adj_land_sqft": 500000.0, "premium_coeff": 1.0, "road_condition": "主干道", "road_width": 50.0, "deviation": -50.0, "notes": "第二黄金地段，大块空地"}, {"lat": 16.833, "lng": 96.209, "township": "丁干遵", "grade": "C", "size_sqft": 2400.0, "sale_price": 840000000.0, "price_per_sqft": 350000.0, "adj_land_sqft": 333333.3333333333, "premium_coeff": 1.05, "road_condition": "次干道", "road_width": 24.0, "deviation": -4.761904761904767, "notes": "市场附近"}, {"lat": 16.96, "lng": 96.18, "township": "德贡北", "grade": "无", "size_sqft": 2400.0, "sale_price": 480000000.0, "price_per_sqft": 200000.0, "adj_land_sqft": 200000.0, "premium_coeff": 1.0, "road_condition": "小巷", "road_width": 16.0, "deviation": -80.0, "notes": "新区地块"}];
+    var townships = [{"lat": 16.8409, "lng": 96.1735, "name": "巴罕", "name_en": "Bahan", "price": 1300000, "mom": 7.5, "category": "核心区", "category_en": "Core"}, {"lat": 16.779, "lng": 96.171, "name": "德贡", "name_en": "Dagon", "price": 1000000, "mom": 6.0, "category": "核心区", "category_en": "Core"}, {"lat": 16.825, "lng": 96.159, "name": "甘马育", "name_en": "Kamayut", "price": 900000, "mom": 6.8, "category": "核心区", "category_en": "Core"}, {"lat": 16.799, "lng": 96.149, "name": "阿龙", "name_en": "Ahlone", "price": 750000, "mom": 5.5, "category": "核心区", "category_en": "Core"}, {"lat": 16.774, "lng": 96.166, "name": "觉达", "name_en": "Kyauktada", "price": 1050000, "mom": 5.0, "category": "核心商业区", "category_en": "Core Commercial"}, {"lat": 16.843, "lng": 96.132, "name": "莱镇", "name_en": "Hlaing", "price": 700000, "mom": 6.2, "category": "中高区", "category_en": "Mid-High"}, {"lat": 16.811, "lng": 96.157, "name": "三羌", "name_en": "Sanchaung", "price": 650000, "mom": 5.0, "category": "中高区", "category_en": "Mid-High"}, {"lat": 16.866, "lng": 96.156, "name": "马阳", "name_en": "Mayangone", "price": 550000, "mom": 4.5, "category": "中高区", "category_en": "Mid-High"}, {"lat": 16.767, "lng": 96.177, "name": "波达通", "name_en": "Botataung", "price": 650000, "mom": 4.0, "category": "核心商业区", "category_en": "Core Commercial"}, {"lat": 16.772, "lng": 96.156, "name": "巴比坦", "name_en": "Pabedan", "price": 850000, "mom": 4.2, "category": "核心商业区", "category_en": "Core Commercial"}, {"lat": 16.77, "lng": 96.148, "name": "兰马多", "name_en": "Lanmadaw", "price": 780000, "mom": 4.0, "category": "核心商业区", "category_en": "Core Commercial"}, {"lat": 16.771, "lng": 96.152, "name": "拉塔", "name_en": "Latha", "price": 820000, "mom": 4.3, "category": "核心商业区", "category_en": "Core Commercial"}, {"lat": 16.815, "lng": 96.185, "name": "东卯", "name_en": "Tamwe", "price": 580000, "mom": 4.8, "category": "中高区", "category_en": "Mid-High"}, {"lat": 16.828, "lng": 96.185, "name": "延景", "name_en": "Yankin", "price": 520000, "mom": 5.2, "category": "中高区", "category_en": "Mid-High"}, {"lat": 16.892, "lng": 96.133, "name": "明加拉栋", "name_en": "Mingaladon", "price": 650000, "mom": 7.0, "category": "新兴热点", "category_en": "Emerging Hotspot"}, {"lat": 16.92, "lng": 96.08, "name": "苗德贡", "name_en": "Myaung Dagar", "price": 500000, "mom": 6.5, "category": "新兴热点", "category_en": "Emerging Hotspot"}, {"lat": 16.838, "lng": 96.125, "name": "九文台", "name_en": "Kyeemyindaing", "price": 420000, "mom": 4.0, "category": "中等区", "category_en": "Mid"}, {"lat": 16.833, "lng": 96.209, "name": "丁干遵", "name_en": "Thingangyun", "price": 350000, "mom": 3.5, "category": "中等区", "category_en": "Mid"}, {"lat": 16.881, "lng": 96.135, "name": "北奥加拉帕", "name_en": "North Okkalapa", "price": 275000, "mom": 3.0, "category": "中等区", "category_en": "Mid"}, {"lat": 16.865, "lng": 96.145, "name": "南奥加拉帕", "name_en": "South Okkalapa", "price": 320000, "mom": 3.8, "category": "中等区", "category_en": "Mid"}, {"lat": 16.82, "lng": 96.218, "name": "达吉打", "name_en": "Thaketa", "price": 275000, "mom": 3.2, "category": "中等区", "category_en": "Mid"}, {"lat": 16.805, "lng": 96.205, "name": "打基打", "name_en": "Dawbon", "price": 360000, "mom": 3.6, "category": "中等区", "category_en": "Mid"}, {"lat": 16.873, "lng": 96.107, "name": "永盛", "name_en": "Insein", "price": 350000, "mom": 3.8, "category": "中等区", "category_en": "Mid"}, {"lat": 16.805, "lng": 96.19, "name": "明加拉栋东", "name_en": "Mingala Taungnyunt", "price": 500000, "mom": 4.0, "category": "中等区", "category_en": "Mid"}, {"lat": 16.94, "lng": 96.22, "name": "德贡东", "name_en": "East Dagon", "price": 165000, "mom": 4.5, "category": "新兴发展区", "category_en": "New Development"}, {"lat": 16.96, "lng": 96.18, "name": "德贡北", "name_en": "North Dagon", "price": 200000, "mom": 4.8, "category": "新兴发展区", "category_en": "New Development"}, {"lat": 16.9, "lng": 96.2, "name": "德贡南", "name_en": "South Dagon", "price": 140000, "mom": 3.5, "category": "新兴发展区", "category_en": "New Development"}, {"lat": 16.935, "lng": 96.24, "name": "德贡色干", "name_en": "Dagon Seikkan", "price": 185000, "mom": 5.0, "category": "新兴发展区", "category_en": "New Development"}, {"lat": 16.91, "lng": 96.09, "name": "瑞必达", "name_en": "Shwepyitha", "price": 140000, "mom": 2.8, "category": "外围区", "category_en": "Outer"}, {"lat": 16.87, "lng": 96.05, "name": "莱达雅", "name_en": "Hlaingtharya", "price": 105000, "mom": 2.5, "category": "外围工业区", "category_en": "Outer Industrial"}, {"lat": 16.7, "lng": 96.25, "name": "坦林", "name_en": "Thanlyin", "price": 200000, "mom": 4.0, "category": "跨河发展区", "category_en": "Cross-River Development"}, {"lat": 17.05, "lng": 96.05, "name": "莫比", "name_en": "Hmawbi", "price": 70000, "mom": 2.0, "category": "远郊区", "category_en": "Suburban"}, {"lat": 16.73, "lng": 96.19, "name": "达拉", "name_en": "Dala", "price": 100000, "mom": 3.0, "category": "跨河发展区", "category_en": "Cross-River Development"}];
+    var gradeColors = {'A':'#dc2626','B':'#2563eb','C':'#16a34a','无':'#64748b'};
+    var hasApiKey = false;
+
+    function initMap() {
+      var yangonCenter = {lat: 16.8409, lng: 96.1735};
+
+      if (!hasApiKey) {
+        // Fallback: show a placeholder with API key instructions
+        var container = document.getElementById('map');
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f8fafc;color:#64748b;text-align:center;padding:40px;font-size:14px;line-height:2">'
+          + '<div>'
+          + '<p style="font-size:48px;margin-bottom:16px">🗺️</p>'
+          + '<p style="font-weight:600;font-size:16px;color:#1e293b;margin-bottom:12px">Google Maps API Key Required</p>'
+          + '<p>To enable the map, get a free API key from</p>'
+          + '<p><a href="https://console.cloud.google.com/google/maps-apis" target="_blank" style="color:#2563eb">Google Cloud Console</a></p>'
+          + '<p style="margin-top:12px">Then update <code style="background:#e2e8f0;padding:2px 6px;border-radius:4px">GMAPS_API_KEY</code> in</p>'
+          + '<p><code style="background:#e2e8f0;padding:2px 6px;border-radius:4px">generate_report.py</code> (line ~40)</p>'
+          + '<p style="margin-top:16px;color:#94a3b8;font-size:12px">' + (plots.length + townships.length) + ' data points ready to display</p>'
+          + '</div></div>';
+        container.style.display = 'block';
+        return;
+      }
+
+      gmap = new google.maps.Map(document.getElementById('map'), {
+        center: yangonCenter,
+        zoom: 12,
+        mapTypeId: 'roadmap',
+        mapTypeControl: true,
+        mapTypeControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT },
+        fullscreenControl: true,
+        streetViewControl: false,
+        styles: [
+          { featureType:'poi', stylers:[{visibility:'off'}] },
+          { featureType:'transit', stylers:[{visibility:'off'}] }
+        ]
+      });
+      gmapInfoWindow = new google.maps.InfoWindow();
+
+      // Township markers (small circles)
+      townships.forEach(function(t) {
+        var color = t.mom >= 6 ? '#db2777' : t.mom >= 4 ? '#d97706' : t.mom >= 2 ? '#4f46e5' : '#6b7280';
+        var marker = new google.maps.Marker({
+          position: {lat: t.lat, lng: t.lng},
+          map: gmap,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 7,
+            fillColor: color,
+            fillOpacity: 0.7,
+            strokeColor: '#fff',
+            strokeWeight: 1.5
+          },
+          title: t.name + ' (' + t.name_en + ')'
+        });
+        marker.addListener('click', function() {
+          var lang = currentLang;
+          var content = '<strong>' + t.name + ' (' + t.name_en + ')</strong><br>'
+            + (lang==='zh'?'基准均价':'Benchmark Avg') + ': ' + (t.price/1000000).toFixed(1) + 'M MMK/sqft<br>'
+            + (lang==='zh'?'环比':'MoM') + ': +' + t.mom.toFixed(1) + '%<br>'
+            + (lang==='zh'?'等级':'Tier') + ': ' + (lang==='en' ? (t.category_en||t.category) : t.category);
+          gmapInfoWindow.setContent(content);
+          gmapInfoWindow.open(gmap, marker);
+        });
+      });
+
+      // Plot markers (colored by grade)
+      plots.forEach(function(p, i) {
+        var color = gradeColors[p.grade] || '#64748b';
+        var marker = new google.maps.Marker({
+          position: {lat: p.lat, lng: p.lng},
+          map: gmap,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 11,
+            fillColor: color,
+            fillOpacity: 0.85,
+            strokeColor: '#fff',
+            strokeWeight: 2
+          },
+          title: '#' + (i+1) + ' ' + p.township,
+          zIndex: 100
+        });
+        marker.addListener('click', function() {
+          var lang = currentLang;
+          var devStr = '';
+          if (p.deviation !== null) {
+            var devColor = p.deviation >= 0 ? '#dc2626' : '#16a34a';
+            devStr = (lang==='zh'?'vs基准':'vs Benchmark') + ': <span style="color:'+devColor+';font-weight:600">' + (p.deviation>=0?'+':'') + p.deviation.toFixed(1) + '%</span><br>';
+          }
+          var notesStr = p.notes ? ((lang==='zh'?'备注':'Note') + ': ' + p.notes) : '';
+          var content = '<strong>#' + (i+1) + ' ' + p.township + '</strong><br>'
+            + (lang==='zh'?'面积':'Area') + ': ' + p.size_sqft.toLocaleString() + ' sqft<br>'
+            + (lang==='zh'?'售价':'Price') + ': ' + (p.sale_price/1000000).toFixed(1) + 'M MMK<br>'
+            + (lang==='zh'?'实际单价':'Unit Price') + ': ' + (p.price_per_sqft/1000).toFixed(0) + 'K MMK/sqft<br>'
+            + (lang==='zh'?'修正地价':'Adj Land Price') + ': ' + (p.adj_land_sqft/1000).toFixed(0) + 'K MMK/sqft<br>'
+            + (lang==='zh'?'溢价系数':'Premium') + ': ' + p.premium_coeff.toFixed(2) + 'x (Grade ' + p.grade + ')<br>'
+            + (lang==='zh'?'路况':'Road') + ': ' + (p.road_condition||'-') + ' | ' + (lang==='zh'?'路宽':'Width') + ': ' + (p.road_width||'-') + 'ft<br>'
+            + devStr + notesStr;
+          gmapInfoWindow.setContent(content);
+          gmapInfoWindow.open(gmap, marker);
+        });
+      });
+
+      // Fit bounds if we have data
+      if (plots.length > 0 || townships.length > 0) {
+        var bounds = new google.maps.LatLngBounds();
+        plots.forEach(function(p) { bounds.extend({lat:p.lat, lng:p.lng}); });
+        townships.forEach(function(t) { bounds.extend({lat:t.lat, lng:t.lng}); });
+        if (!bounds.isEmpty()) gmap.fitBounds(bounds, 60);
+      }
+    }
+
+    /* ================================================================
+       CHARTS
+       ================================================================ */
+    var momChartInstance, roadChartInstance, trendChartInstance;
+    var regionalChartInstances = [];
+
+    function renderCharts() {
+      var lang = currentLang;
+      Chart.defaults.color = '#475569';
+      Chart.defaults.font.family = "'Segoe UI','Noto Sans SC','Microsoft YaHei',sans-serif";
+      Chart.defaults.font.size = 12;
+
+      // Destroy existing
+      [momChartInstance, roadChartInstance, trendChartInstance].forEach(function(c) {
+        if (c) c.destroy();
+      });
+      regionalChartInstances.forEach(function(c) { if (c) c.destroy(); });
+      regionalChartInstances = [];
+
+      // MoM Chart
+      var momData = {"labels": ["巴罕", "明加拉栋", "甘马育", "苗德贡", "莱镇", "德贡", "阿龙", "延景", "觉达", "三羌", "德贡色干", "东卯", "德贡北", "马阳", "德贡东"], "values": [7.5, 7.0, 6.8, 6.5, 6.2, 6.0, 5.5, 5.2, 5.0, 5.0, 5.0, 4.8, 4.8, 4.5, 4.5]};
+      var momCtx = document.getElementById('momChart');
+      if (momCtx) {
+        momChartInstance = new Chart(momCtx, {
+          type: 'bar',
+          data: {
+            labels: momData.labels,
+            datasets: [{
+              label: I18N[lang].chart_mom_label,
+              data: momData.values,
+              backgroundColor: momData.values.map(function(v){ return v >= 6 ? '#db2777' : v >= 4 ? '#dc2626' : '#f59e0b'; }),
+              borderRadius: 4
+            }]
+          },
+          options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { title:{display:true,text:I18N[lang].chart_mom_axis}, grid:{color:'#f1f5f9'} } }
+          }
+        });
+      }
+
+      // Road Chart
+      var roadData = {"labels": ["碑路", "大学路", "世界和平塔路", "昂山将军路", "阿努律陀路", "摩诃班都拉路", "Strand路", "达摩泽迪路", "茵雅路", "帕拉米路", "巴音瑙路", "巴霍路", "永盛路", "纳瓦达街", "佛塔路", "延景街", "第26路", "第30路", "苏达玛路", "丁干遵路", "甘希达路", "达吉打路", "下波桑路", "上波桑路", "扎布蒂里路", "莫贡路", "雅达纳街", "彬隆路", "昂敏加拉高速", "仰曼高速"], "mins": [800000, 700000, 500000, 600000, 500000, 500000, 400000, 600000, 500000, 400000, 400000, 350000, 250000, 400000, 220000, 250000, 160000, 180000, 170000, 200000, 180000, 160000, 350000, 380000, 100000, 110000, 90000, 85000, 300000, 200000], "avgs": [1300000, 1100000, 850000, 1050000, 850000, 850000, 700000, 950000, 850000, 650000, 650000, 600000, 420000, 680000, 380000, 420000, 270000, 310000, 290000, 350000, 320000, 280000, 560000, 600000, 180000, 200000, 150000, 165000, 550000, 400000], "maxs": [1800000, 1500000, 1200000, 1500000, 1200000, 1200000, 1000000, 1300000, 1200000, 900000, 900000, 850000, 650000, 950000, 550000, 600000, 380000, 450000, 420000, 500000, 480000, 400000, 800000, 850000, 260000, 300000, 220000, 250000, 800000, 600000]};
+      var roadCtx = document.getElementById('roadChart');
+      if (roadCtx) {
+        roadChartInstance = new Chart(roadCtx, {
+          type: 'bar',
+          data: {
+            labels: roadData.labels,
+            datasets: [
+              { label: I18N[lang].chart_road_min, data: roadData.mins, backgroundColor:'#bfdbfe', borderRadius:3 },
+              { label: I18N[lang].chart_road_avg, data: roadData.avgs, backgroundColor:'#2563eb', borderRadius:3 },
+              { label: I18N[lang].chart_road_max, data: roadData.maxs, backgroundColor:'#1e3a5f', borderRadius:3 }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position:'top' } },
+            scales: {
+              y: { title:{display:true,text:I18N[lang].chart_road_axis}, ticks:{callback:function(v){return (v/1000000).toFixed(0)+'M';}}, grid:{color:'#f1f5f9'} },
+              x: { grid:{display:false} }
+            }
+          }
+        });
+      }
+
+      // Trend Chart
+      var trendData = {"labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [420000, 438000, 455000, 475000, 498000, 515000], "transactions": [285, 312, 298, 325, 340, 358]};
+      var trendCtx = document.getElementById('trendChart');
+      if (trendCtx) {
+        trendChartInstance = new Chart(trendCtx, {
+          type: 'line',
+          data: {
+            labels: trendData.labels,
+            datasets: [{
+              label: I18N[lang].chart_trend_price,
+              data: trendData.prices,
+              borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.08)', fill:true, tension:0.3, borderWidth:2, pointRadius:5, pointBackgroundColor:'#2563eb'
+            },{
+              label: I18N[lang].chart_trend_transactions,
+              data: trendData.transactions,
+              borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.08)', fill:false, tension:0.3, borderWidth:2, pointRadius:4, yAxisID:'y1'
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position:'top' } },
+            scales: {
+              y: { title:{display:true,text:I18N[lang].chart_trend_axis_price}, position:'left', ticks:{callback:function(v){return (v/1000000).toFixed(1)+'M';}}, grid:{color:'#f1f5f9'} },
+              y1: { title:{display:true,text:I18N[lang].chart_trend_axis_transactions}, position:'right', grid:{display:false} }
+            }
+          }
+        });
+      }
+
+      // Regional Trend Charts (9 charts)
+      var regionalData = [{"key": "East Dagon", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [145000, 150000, 155000, 160000, 162000, 165000], "transactions": [22, 28, 25, 31, 35, 38]}, {"key": "North Dagon", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [175000, 182000, 188000, 193000, 197000, 200000], "transactions": [18, 24, 27, 30, 33, 36]}, {"key": "South Dagon", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [125000, 128000, 132000, 136000, 138000, 140000], "transactions": [20, 23, 21, 26, 29, 32]}, {"key": "South Okkalapa", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [290000, 298000, 305000, 312000, 316000, 320000], "transactions": [25, 28, 26, 31, 34, 37]}, {"key": "North Okkalapa", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [255000, 260000, 265000, 270000, 273000, 275000], "transactions": [30, 33, 29, 35, 38, 42]}, {"key": "Thaketa", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [255000, 260000, 265000, 270000, 272000, 275000], "transactions": [18, 22, 20, 24, 27, 30]}, {"key": "Yankin", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [470000, 485000, 498000, 508000, 514000, 520000], "transactions": [22, 26, 24, 29, 32, 35]}, {"key": "Thingangyun", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [325000, 332000, 338000, 343000, 347000, 350000], "transactions": [20, 24, 22, 27, 30, 33]}, {"key": "Dagon Seikkan", "labels": ["2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07"], "prices": [165000, 170000, 175000, 180000, 182000, 185000], "transactions": [15, 19, 22, 25, 28, 31]}];
+      var regionColors = ['#dc2626','#2563eb','#16a34a','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#db2777','#65a30d'];
+      regionalData.forEach(function(rd, idx) {
+        var ctx = document.getElementById('regionalChart_' + idx);
+        if (ctx) {
+          var inst = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: rd.labels,
+              datasets: [{
+                label: I18N[lang].chart_trend_price,
+                data: rd.prices,
+                borderColor: regionColors[idx % regionColors.length],
+                backgroundColor: regionColors[idx % regionColors.length] + '15',
+                fill: true, tension: 0.3, borderWidth: 2, pointRadius: 3,
+                pointBackgroundColor: regionColors[idx % regionColors.length]
+              },{
+                label: I18N[lang].chart_trend_transactions,
+                data: rd.transactions,
+                borderColor: '#94a3b8', backgroundColor: 'rgba(148,163,184,0.1)',
+                fill: false, tension: 0.3, borderWidth: 1.5, pointRadius: 2,
+                yAxisID: 'y1', borderDash: [4,4]
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display:false } },
+              scales: {
+                y: { ticks: { callback:function(v){return (v/1000).toFixed(0)+'K';}, font:{size:9} }, grid:{ color:'#f1f5f9' } },
+                y1: { position:'right', grid:{ display:false }, ticks: { font:{size:9} } }
+              },
+              elements: { point: { radius: 3 } }
+            }
+          });
+          regionalChartInstances.push(inst);
+        }
+      });
+    }
+
+    // Google Maps callback
+    if (hasApiKey) {
+      window.initMap = initMap;
+    } else {
+      // Call initMap directly to show the placeholder
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initMap, 100);
+      });
+    }
+  </script>
+</body>
+</html>
